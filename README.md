@@ -1,68 +1,140 @@
-# CodeIgniter 4 Application Starter
+# Montink - Mini ERP em CodeIgniter 4
 
-## What is CodeIgniter?
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Repositório: [https://github.com/alessandrodesign/montink](https://github.com/alessandrodesign/montink)
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+---
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Visão Geral
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+Mini ERP compacto desenvolvido em PHP com CodeIgniter 4, que oferece funcionalidades essenciais para gerenciamento de
+produtos, estoque, vendas, cupons, carrinho de compras, autenticação, relatórios administrativos e integração via
+webhooks.
 
-## Installation & updates
+---
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## Tecnologias Utilizadas
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+- PHP 8.x
+- CodeIgniter 4
+- MySQL / MariaDB
+- Bootstrap 5
+- Composer
+- ViaCEP API (consulta de CEP)
 
-## Setup
+---
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Instalação
 
-## Important Change with index.php
+1. Clone o repositório:
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+   ```bash
+   git clone https://github.com/alessandrodesign/montink.git
+   cd montink
+   ```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+2. Instale as dependências:
 
-**Please** read the user guide for a better explanation of how CI4 works!
+   ```bash
+   composer install
+   ```
 
-## Repository Management
+3. Configure o arquivo `.env` com suas credenciais de banco de dados e outras variáveis.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+4. Execute as migrations:
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+   ```bash
+   php spark migrate
+   ```
 
-## Server Requirements
+5. (Opcional) Execute os seeders para dados iniciais:
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+   ```bash
+   php spark db:seed DatabaseSeeder
+   ```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+6. Configure seu servidor web para apontar para a pasta `public/`.
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+---
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## Funcionalidades Principais
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### Autenticação
+
+- Registro, login, logout e recuperação de senha via email com token seguro.
+
+### Produtos e Estoque
+
+- Cadastro de produtos com variações e controle de estoque.
+- Status ativo/inativo para produtos.
+
+### Carrinho e Pedidos
+
+- Gerenciamento de carrinho em sessão.
+- Cálculo de subtotal, descontos, frete (regras específicas).
+- Finalização de pedidos com persistência.
+
+### Cupons
+
+- Criação e aplicação de cupons com regras de validade e desconto.
+
+### Relatórios
+
+- Relatórios de vendas diárias, vendas por produto, estoque e estoque baixo.
+
+### Emails
+
+- Envio de emails transacionais: boas-vindas, recuperação de senha, confirmação de pedido, status de pagamento.
+
+### Webhooks
+
+- Recebimento e processamento de notificações externas (ex: gateways de pagamento).
+
+### Consulta de CEP
+
+- Integração com ViaCEP para preenchimento automático de endereço no checkout.
+
+---
+
+## Estrutura do Projeto
+
+```
+app/
+  Controllers/
+  Entities/
+  Enums/
+  Helpers/
+  Models/
+  Services/
+  Views/
+public/
+```
+
+---
+
+## Uso dos Helpers
+
+- `auth()` — acesso ao serviço de autenticação.
+- `cart()` — acesso ao serviço de carrinho.
+- `money()` — formatação de valores monetários.
+
+---
+
+## Rotas Importantes
+
+- `/auth/login` — login.
+- `/auth/register` — registro.
+- `/auth/forgot-password` — recuperação de senha.
+- `/auth/reset-password/{token}` — redefinição de senha.
+- `/cart` — visualização do carrinho.
+- `/cart/add` — adicionar item ao carrinho.
+- `/admin/sales-report` — relatório de vendas.
+- `/admin/product-sales-report` — relatório de vendas por produto.
+- `/admin/stock-report` — relatório de estoque.
+- `/admin/low-stock-report` — relatório de estoque baixo.
+- `/webhook/payment` — endpoint para webhooks de pagamento.
+
+---
+
+*Mini ERP - Simplificando a gestão do seu negócio.*
